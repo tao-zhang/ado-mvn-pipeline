@@ -1,0 +1,17 @@
+parameters:
+  artifactsName: mvn-artifacts
+
+steps:
+- task: CopyFiles@2
+  displayName: 'Copy Files'
+  inputs:
+    contents: '**/target/?(*.jar|*.war)'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+    CleanTargetFolder: true
+    flattenFolders: true
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Pipeline Artifact'
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    artifact: '${{ parameters.artifactsName }}'

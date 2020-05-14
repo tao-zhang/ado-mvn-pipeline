@@ -1,0 +1,19 @@
+parameters:
+  mavenGoals: clean package
+  mavenProfiles: ado
+  mavenSkipTests: true
+
+steps:
+- task: DownloadSecureFile@1
+  displayName: Download secure file
+  inputs:
+    secureFile: settings.xml
+
+- task: Maven@3
+  displayName: Maven Build
+  inputs:
+    mavenPomFile: pom.xml
+    publishJUnitResults: false
+    goals: '${{ parameters.mavenGoals }} -P${{ parameters.mavenProfiles }} -s $(Agent.TempDirectory)/settings.xml'
+    ${{ if eq(parameters.mavenSkipTests, 'true') }}:
+      options: -DskipTests

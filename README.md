@@ -1,2 +1,3 @@
-# ado-mvn-pipeline
+# Introduction
+
 Generic Azure DevOps build pipeline for Maven projects

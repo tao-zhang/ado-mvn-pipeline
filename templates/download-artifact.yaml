@@ -1,0 +1,24 @@
+### Download artifacts from latest pipeline run, filtered by branch name
+# pipelineID: it can be found at 'Variable' tab under the pipeline, with the name 'system.definitionId'
+# branchName: the branch name to be filtered by
+
+parameters:
+  pipelineID:
+  branchName: refs/heads/development
+  artifactName: mvn-artifacts
+  artifactMatchingPattern: '**'
+  targetPath:
+
+
+steps:
+- task: DownloadPipelineArtifact@2
+  displayName: Download Pipeline Artifact
+  inputs:
+    buildType: specific
+    project: 727b0ff0-3bf4-4af1-8202-205e68b00c16  # Project ID
+    definition: '${{ parameters.pipelineID }}'
+    buildVersionToDownload: latestFromBranch
+    branchName: '${{ parameters.branchName }}'
+    artifactName: '${{ parameters.artifactName }}'
+    itemPattern: '${{ parameters.artifactMatchingPattern}}'
+    targetPath: '${{ parameters.targetPath }}'

@@ -1,0 +1,20 @@
+parameters:
+  releaseTag: tag
+
+steps:
+- task: Bash@3
+  displayName: Create and Push Tag
+  condition: succeeded()
+  inputs:
+    targetType: inline
+    script: |
+      git config --global user.email "user@example.com"
+      git config --global user.name "user"
+
+      if git tag | grep ${{ parameters.releaseTag }} > /dev/null; then
+        git push --delete origin ${{ parameters.releaseTag }}
+        git tag --delete ${{ parameters.releaseTag }}
+      fi
+
+      git tag -a ${{ parameters.releaseTag }} -m "Release tag for version ${{ parameters.releaseTag }}"
+      git push origin ${{ parameters.releaseTag }}
